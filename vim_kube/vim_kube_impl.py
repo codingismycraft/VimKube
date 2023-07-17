@@ -1,12 +1,25 @@
 """Lower level implementation details for the VimKube pluggin."""
 
 import collections
+import re
+import subprocess
 
 from kubernetes import client, config
 
 ContextInfo = collections.namedtuple(
     'ContextInfo', ["active_context", "contexts"]
 )
+
+_CMD_SET_CONTEXT = "kubectl config use-context {context}"
+
+def setActiveContext(context):
+    """Sets the active context."""
+    cmd = _CMD_SET_CONTEXT.format(context=context)
+    output = subprocess.getoutput(cmd)
+    for line in output.splitlines():
+        line = line.strip().lower()
+        if "error" in line:
+            print(line)
 
 
 def getContexts():
@@ -34,7 +47,8 @@ def getTagPerApplication():
     for pod in pod_list.items:
         labels = pod.metadata.labels
         app = labels.get('app')
-        tag = labels.get("mw.release")
-        tags[app] = str(tag)
+        tag = labels.get("mw.release", 'n/a')
+        if app:
+            tags[app] = str(tag)
     return tags
 

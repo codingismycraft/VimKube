@@ -1,4 +1,4 @@
-" Not implemented yet..
+" Implemets the functionality of the VimKube pluggin.
 
 let s:plugin_path = expand('<sfile>:p:h')
 let s:path_was_added = 0
@@ -16,7 +16,6 @@ function! VimKube#ActivateKubernetesWindow()
 endfunction
 
 python3 << endpython
-
 import os
 import sys
 import vim
@@ -33,6 +32,11 @@ def preparePythonPath():
         path = os.path.dirname(path)
         sys.path.insert(0, path)
         vim.command("let s:path_was_added = 1")
+
+def addLineToBuffer(line):
+    """Adds the pass in text (line) to the active buffer."""
+    vim.command(f"let @a= '{line}'")
+    vim.command("put a")
 endpython
 
 function! VimKube#GetContexts()
@@ -54,18 +58,35 @@ endpython
 execute "normal! gg"
 endfunction
 
+
+
 function! VimKube#GetTagPerApplication()
 " Prints all the apps and their deployed tags for the active context.
 call VimKube#ActivateKubernetesWindow()
 python3 << endpython
 preparePythonPath()
 import vim_kube.vim_kube_impl as vk
-t = vk.getTagPerApplication()
-for app, tag in t.items():
-    tag = f'{app}: {tag}'
-    vim.command(f"let @a= '{tag}'")
-    vim.command("put a")
+current_context, contexts = vk.getContexts()
+addLineToBuffer('[Deployed Tags Per Application]')
+addLineToBuffer('-' * 80)
+addLineToBuffer(f'Current Context: {current_context}')
+addLineToBuffer('-' * 80)
+for app, tag in vk.getTagPerApplication().items():
+    addLineToBuffer(f'{app:40} {tag}')
 endpython
 execute "normal! gg"
+endfunction
+
+
+function! VimKube#SetActiveContext()
+" Sets the active context to what is currently in the default register.    
+let l:context = getreg()
+python3 << endpython
+preparePythonPath()
+import vim_kube.vim_kube_impl as vk
+context = vim.eval("l:context")
+vk.setActiveContext(context)
+endpython
+call VimKube#GetContexts()
 endfunction
 
