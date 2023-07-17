@@ -68,13 +68,23 @@ call VimKube#ActivateKubernetesWindow()
 python3 << endpython
 preparePythonPath()
 import vim_kube.vim_kube_impl as vk
+
 current_context, contexts = vk.getContexts()
+
 addLineToBuffer('[Deployed Tags Per Application]')
 addLineToBuffer('-' * 80)
 addLineToBuffer(f'Current Context: {current_context}')
 addLineToBuffer('-' * 80)
+
 for app, tag in vk.getTagPerApplication().items():
     addLineToBuffer(f'{app:40} {tag}')
+ 
+addLineToBuffer('-' * 80)
+addLineToBuffer('[Other Contexts]')
+addLineToBuffer('-' * 80)
+for c in contexts:
+    addLineToBuffer(c)
+
 endpython
 execute "normal! gg"
 endfunction
@@ -89,6 +99,6 @@ import vim_kube.vim_kube_impl as vk
 context = vim.eval("l:context")
 vk.setActiveContext(context)
 endpython
-call VimKube#GetContexts()
+call VimKube#GetTagPerApplication()
 endfunction
 
