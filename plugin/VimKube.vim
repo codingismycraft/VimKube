@@ -1,2 +1,2 @@
-nnoremap <leader>k <ESC>:echo "not implemented yet..."<CR>
+nnoremap <leader>k <ESC>:call VimKube#GetContexts()<CR>
 
