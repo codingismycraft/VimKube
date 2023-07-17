@@ -1,16 +1,33 @@
 """Lower level implementation details for the VimKube pluggin."""
 
 import collections
+import json
+import os
+import pathlib
 import re
 import subprocess
 
 from kubernetes import client, config
+
+_HOME_DIR = pathlib.Path.home()
+_CONFIG_PATH = os.path.join(_HOME_DIR, ".kubelens.json")
 
 ContextInfo = collections.namedtuple(
     'ContextInfo', ["active_context", "contexts"]
 )
 
 _CMD_SET_CONTEXT = "kubectl config use-context {context}"
+
+
+def _get_contexts_to_skip():
+    """Gets to context to skip reading the config file."""
+    try:
+        with open(_CONFIG_PATH, 'r') as fin:
+            data = fin.read()
+            config = json.loads(data)
+            return set(config['contexts-to-skip'])
+    except Exception as ex:
+        return []
 
 def setActiveContext(context):
     """Sets the active context."""
@@ -30,10 +47,14 @@ def getContexts():
 
     kubectl config get-contexts
     """
+    contexts_to_skip = _get_contexts_to_skip()
     config.load_kube_config()
-    contexts = [c['name'] for c in config.list_kube_config_contexts()[0]]
+    contexts = []
+    for c in config.list_kube_config_contexts()[0]:
+        name = c['name']
+        if name not in contexts_to_skip:
+            contexts.append(name)
     active_context = config.list_kube_config_contexts()[1]['name']
-
     return ContextInfo(active_context, contexts)
 
 
