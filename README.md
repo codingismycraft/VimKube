@@ -11,8 +11,7 @@ The contents of this file can look as follows:
 ```json
 {
     "contexts-to-skip": [
-        "kops-prime-prod-mco-us-east-1",
-        "kops-prime-prod-mco-us-west-2",
+        "content-name..",
         ....
     ]
 }
