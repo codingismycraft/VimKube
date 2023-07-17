@@ -12,6 +12,8 @@ function! VimKube#ActivateKubernetesWindow()
         execute "normal! ggdG"
     else
         execute "vsplit ". s:kubectl_file
+        setlocal buftype=nofile
+        setlocal bufhidden=hide
     endif  
 endfunction
 
