@@ -23,3 +23,18 @@ def getContexts():
 
     return ContextInfo(active_context, contexts)
 
+
+def getTagPerApplication():
+    """Returns a mapping from the application name to its deployed tag."""
+    config.load_kube_config()
+    api_instance = client.CoreV1Api()
+    context = config.list_kube_config_contexts()[1]['context']["namespace"]
+    pod_list = api_instance.list_namespaced_pod(namespace=context)
+    tags = {}
+    for pod in pod_list.items:
+        labels = pod.metadata.labels
+        app = labels.get('app')
+        tag = labels.get("mw.release")
+        tags[app] = str(tag)
+    return tags
+

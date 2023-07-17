@@ -43,19 +43,29 @@ python3 << endpython
 preparePythonPath()
 import vim_kube.vim_kube_impl as vk
 current_context, contexts = vk.getContexts()
-
 vim.command(f"let @a= 'Current Context: {current_context}'")
 vim.command("put a")
-
 vim.command(f"let @a= '\nContexts'")
 vim.command("put a")
-
 for c in contexts:
     vim.command(f"let @a='{c}'")
     vim.command("put a")
-
 endpython
-
 execute "normal! gg"
-
 endfunction
+
+function! VimKube#GetTagPerApplication()
+" Prints all the apps and their deployed tags for the active context.
+call VimKube#ActivateKubernetesWindow()
+python3 << endpython
+preparePythonPath()
+import vim_kube.vim_kube_impl as vk
+t = vk.getTagPerApplication()
+for app, tag in t.items():
+    tag = f'{app}: {tag}'
+    vim.command(f"let @a= '{tag}'")
+    vim.command("put a")
+endpython
+execute "normal! gg"
+endfunction
+
