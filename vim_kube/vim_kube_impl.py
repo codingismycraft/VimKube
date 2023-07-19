@@ -9,6 +9,8 @@ import subprocess
 
 from kubernetes import client, config
 
+import vim_kube.naming as naming
+
 _HOME_DIR = pathlib.Path.home()
 _CONFIG_PATH = os.path.join(_HOME_DIR, ".kubelens.json")
 
@@ -53,8 +55,9 @@ def getContexts():
     for c in config.list_kube_config_contexts()[0]:
         name = c['name']
         if name not in contexts_to_skip:
-            contexts.append(name)
+            contexts.append(naming.makeContextName(name))
     active_context = config.list_kube_config_contexts()[1]['name']
+    active_context = naming.makeContextName(active_context)
     return ContextInfo(active_context, contexts)
 
 
