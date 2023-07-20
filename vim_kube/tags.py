@@ -21,6 +21,3 @@ def getTagsPerService(service_name_to_lookup):
                 deployments.append((context_name, tag))
     return deployments
 
-
-print(getTagsPerService("rockport-trigger"))
-
