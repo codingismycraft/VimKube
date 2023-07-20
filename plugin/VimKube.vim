@@ -23,8 +23,5 @@
 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-nnoremap <leader>k <ESC>:call VimKube#GetContexts()<CR>
-nnoremap <leader>l <ESC>:call VimKube#GetTagPerApplication()<CR>
-nnoremap <leader>; <ESC>:call VimKube#SetActiveContext()<CR>
-
+nnoremap <leader>h <ESC>:call VimKube#ProcessUserSelection()<CR>
 
