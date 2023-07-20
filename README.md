@@ -7,16 +7,6 @@ A simple vim plugin to assist with "simple" Kubernetes tasks
 
 - python 3.8+
 
-- [kubernetes library](https://pypi.org/project/kubernetes)
-
-Install with
-
-```
-pip install kubernetes
-```
-
-Be sure that the pip version you are using corresponds to vim's.
-
 ## Install 
 
 Install using your favorite pluggin manager:
@@ -66,20 +56,20 @@ A service name is always encloded in single quotes.
 "my-application-name"
 ```
 
-### Deployed tag (enclosed in <>)
+### Deployed tag (enclosed in {})
 
-A deployed tag is always enclosed in brakets. 
+A deployed tag is always enclosed in curly brakets. 
 
 ```
-<my-tag>
+{my-tag}
 ```
 
 # Interaction with the user
 
 All the intraction with the user is done by a single keyboard combination (the
-default is <leader>k).
+default is <leader>h).
 
-When pressing the <leader>k combo the following different cases exist:
+When pressing the <leader>h combo the following different cases exist:
 
 ###  A window other than the one used by the pluggin is active
 

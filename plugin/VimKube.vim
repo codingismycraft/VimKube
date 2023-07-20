@@ -7,7 +7,7 @@
 " Meant to be make the use of kubectl simpler while creating new namespeaces
 " of any other kind of kubernetes object is out of the scope of this pluggin.
 " 
-" The objective is to keep the pluggin simplei, clean and minimalistic."
+" The objective is to keep the pluggin simple, clean and minimalistic."
 "
 "        ,---,---,---,---,---,---,---,---,---,---,---,---,---,-------,
 "        |---'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-----|
